@@ -1,44 +1,27 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Concept, AssessmentResult, AppStep } from '../types';
+import { AppStep } from '../types';
 
 interface AppContextType {
-  sessionId: string | null;
-  concepts: Concept[];
-  results: AssessmentResult | null;
   currentStep: AppStep;
-  setSessionId: (id: string | null) => void;
-  setConcepts: (concepts: Concept[]) => void;
-  setResults: (results: AssessmentResult | null) => void;
-  setCurrentStep: (step: AppStep) => void;
+  setStep: (step: AppStep) => void;
+  file: File | null;
+  setFile: (file: File | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [concepts, setConcepts] = useState<Concept[]>([]);
-  const [results, setResults] = useState<AssessmentResult | null>(null);
-  const [currentStep, setCurrentStep] = useState<AppStep>('upload');
+  const [currentStep, setStep] = useState<AppStep>('upload');
+  const [file, setFile] = useState<File | null>(null);
 
   return (
-    <AppContext.Provider
-      value={{
-        sessionId,
-        concepts,
-        results,
-        currentStep,
-        setSessionId,
-        setConcepts,
-        setResults,
-        setCurrentStep,
-      }}
-    >
+    <AppContext.Provider value={{ currentStep, setStep, file, setFile }}>
       {children}
     </AppContext.Provider>
   );
 };
 
-export const useApp = (): AppContextType => {
+export const useApp = () => {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error('useApp must be used within an AppProvider');

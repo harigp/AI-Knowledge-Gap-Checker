@@ -24,7 +24,7 @@ export interface LearningRecommendation {
 }
 
 // Defines the steps for app navigation
-export type AppStep = 'upload' | 'graph' | 'quiz' | 'results';
+export type AppStep = 'upload' | 'processing' | 'graph' | 'quiz' | 'roadmap';
 
 // Global state interface
 export interface AppState {
