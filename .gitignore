@@ -1,4 +1,9 @@
+# Secrets
 .env
+.env.*
+!.env.example
+
+# Local docs
 AIKnowledgeGapCheckerSpecs.docx
 ~$*
 
@@ -11,3 +16,13 @@ venv/
 .coverage
 htmlcov/
 *.egg-info/
+
+# Node dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
