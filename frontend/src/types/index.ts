@@ -1,0 +1,35 @@
+export interface Concept {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswerIndex: number;
+}
+
+export interface AssessmentResult {
+  score: number;
+  totalQuestions: number;
+  passedConceptIds: string[];
+}
+
+export interface LearningRecommendation {
+  id: string;
+  title: string;
+  reason: string;
+}
+
+// Defines the steps for app navigation
+export type AppStep = 'upload' | 'graph' | 'quiz' | 'results';
+
+// Global state interface
+export interface AppState {
+  sessionId: string | null;
+  concepts: Concept[];
+  results: AssessmentResult | null;
+  currentStep: AppStep;
+}
