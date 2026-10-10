@@ -5,6 +5,7 @@ import { FileUploader } from './components/upload/FileUploader';
 import { ProcessingState } from './components/upload/ProcessingState';
 import { KnowledgeGraph } from './components/graph/KnowledgeGraph';
 import { QuizRunner } from './components/quiz/QuizRunner';
+import { RoadmapView } from './components/roadmap/RoadmapView';
 
 export default function App() {
   const { currentStep } = useApp();
@@ -18,7 +19,7 @@ export default function App() {
         {currentStep === 'processing' && <ProcessingState />}
         {currentStep === 'graph' && <KnowledgeGraph />}
         {currentStep === 'quiz' && <QuizRunner />}
-        {currentStep === 'roadmap' && <div>[ Roadmap Screen Placeholder ]</div>}
+        {currentStep === 'roadmap' && <RoadmapView />}
       </main>
     </div>
   );
