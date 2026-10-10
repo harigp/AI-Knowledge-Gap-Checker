@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-File
-=======
 import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 
@@ -108,4 +105,3 @@ export const FileUploader: React.FC = () => {
     </div>
   );
 };
->>>>>>> c961829 (Phase 2 Update)
