@@ -149,6 +149,12 @@ def test_cors_allows_dev_origin(client):
     r = client.options("/api/analyze", headers={"Origin": "http://localhost:5173",
                                                 "Access-Control-Request-Method": "POST"})
     assert r.headers.get("access-control-allow-origin") == "http://localhost:5173"
+    r = client.options("/api/analyze", headers={"Origin": "http://localhost:5174",
+                                                "Access-Control-Request-Method": "POST"})
+    assert r.headers.get("access-control-allow-origin") == "http://localhost:5174"  # any local port
+    r = client.options("/api/analyze", headers={"Origin": "http://localhost.evil.example",
+                                                "Access-Control-Request-Method": "POST"})
+    assert "access-control-allow-origin" not in r.headers
     r = client.options("/api/analyze", headers={"Origin": "http://evil.example",
                                                 "Access-Control-Request-Method": "POST"})
     assert "access-control-allow-origin" not in r.headers
