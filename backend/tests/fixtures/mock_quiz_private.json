@@ -1,0 +1,132 @@
+[
+  {
+    "id": "q1",
+    "concept_id": "probability",
+    "question": "A fair six-sided die is rolled. What is the probability of rolling an even number?",
+    "options": [
+      "1/6",
+      "1/3",
+      "1/2",
+      "2/3"
+    ],
+    "explanation": "Three of the six faces (2, 4, 6) are even, so the probability is 3/6 = 1/2.",
+    "correct_index": 2
+  },
+  {
+    "id": "q2",
+    "concept_id": "probability",
+    "question": "Two fair coins are flipped. What is the probability that both land heads?",
+    "options": [
+      "1/4",
+      "1/2",
+      "1/3",
+      "3/4"
+    ],
+    "explanation": "The flips are independent, so multiply: 1/2 x 1/2 = 1/4.",
+    "correct_index": 0
+  },
+  {
+    "id": "q3",
+    "concept_id": "statistics",
+    "question": "What is the mean of the data set 2, 4, 6, 8?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "20"
+    ],
+    "explanation": "The sum is 20 and there are 4 values, so the mean is 20/4 = 5.",
+    "correct_index": 1
+  },
+  {
+    "id": "q4",
+    "concept_id": "statistics",
+    "question": "Which measure of spread is the square root of the variance?",
+    "options": [
+      "Median",
+      "Range",
+      "Standard deviation",
+      "Mode"
+    ],
+    "explanation": "Standard deviation is defined as the square root of the variance.",
+    "correct_index": 2
+  },
+  {
+    "id": "q5",
+    "concept_id": "derivatives",
+    "question": "What is the derivative of f(x) = x^2?",
+    "options": [
+      "x",
+      "x^2",
+      "2",
+      "2x"
+    ],
+    "explanation": "By the power rule, d/dx of x^2 is 2x.",
+    "correct_index": 3
+  },
+  {
+    "id": "q6",
+    "concept_id": "derivatives",
+    "question": "What does the derivative of a function at a point represent?",
+    "options": [
+      "The area under the curve up to that point",
+      "The instantaneous rate of change at that point",
+      "The maximum value of the function",
+      "The average of the function's values"
+    ],
+    "explanation": "The derivative gives the slope of the tangent line, the instantaneous rate of change.",
+    "correct_index": 1
+  },
+  {
+    "id": "q7",
+    "concept_id": "linear_regression",
+    "question": "In simple linear regression, what does the slope represent?",
+    "options": [
+      "The expected change in y for a one-unit increase in x",
+      "The predicted value of y when x is 0",
+      "The average of all y values",
+      "The number of data points"
+    ],
+    "explanation": "The slope is how much the predicted y changes when x increases by one unit.",
+    "correct_index": 0
+  },
+  {
+    "id": "q8",
+    "concept_id": "linear_regression",
+    "question": "Which quantity does ordinary least squares regression minimize?",
+    "options": [
+      "The largest single residual",
+      "The sum of absolute residuals",
+      "The number of outliers",
+      "The sum of squared residuals"
+    ],
+    "explanation": "Ordinary least squares chooses the line that minimizes the sum of squared residuals.",
+    "correct_index": 3
+  },
+  {
+    "id": "q9",
+    "concept_id": "gradient_descent",
+    "question": "In gradient descent, in which direction is each parameter update taken?",
+    "options": [
+      "Along the gradient",
+      "Opposite the gradient",
+      "Perpendicular to the gradient",
+      "In a random direction"
+    ],
+    "explanation": "The gradient points uphill, so gradient descent steps in the opposite direction to reduce the loss.",
+    "correct_index": 1
+  },
+  {
+    "id": "q10",
+    "concept_id": "gradient_descent",
+    "question": "What can happen if the learning rate in gradient descent is set too large?",
+    "options": [
+      "The loss function changes shape",
+      "The gradient becomes zero",
+      "Training always converges faster",
+      "The updates can overshoot the minimum and diverge"
+    ],
+    "explanation": "Steps that are too large can jump past the minimum and make the loss grow instead of shrink.",
+    "correct_index": 3
+  }
+]

@@ -1,0 +1,125 @@
+{
+  "session_id": "3f2a9c1e7b4d4e8a9c0d5b6e1f2a3b4c",
+  "questions": [
+    {
+      "id": "q1",
+      "concept_id": "probability",
+      "question": "A fair six-sided die is rolled. What is the probability of rolling an even number?",
+      "options": [
+        "1/6",
+        "1/3",
+        "1/2",
+        "2/3"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q2",
+      "concept_id": "probability",
+      "question": "Two fair coins are flipped. What is the probability that both land heads?",
+      "options": [
+        "1/4",
+        "1/2",
+        "1/3",
+        "3/4"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q3",
+      "concept_id": "statistics",
+      "question": "What is the mean of the data set 2, 4, 6, 8?",
+      "options": [
+        "4",
+        "5",
+        "6",
+        "20"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q4",
+      "concept_id": "statistics",
+      "question": "Which measure of spread is the square root of the variance?",
+      "options": [
+        "Median",
+        "Range",
+        "Standard deviation",
+        "Mode"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q5",
+      "concept_id": "derivatives",
+      "question": "What is the derivative of f(x) = x^2?",
+      "options": [
+        "x",
+        "x^2",
+        "2",
+        "2x"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q6",
+      "concept_id": "derivatives",
+      "question": "What does the derivative of a function at a point represent?",
+      "options": [
+        "The area under the curve up to that point",
+        "The instantaneous rate of change at that point",
+        "The maximum value of the function",
+        "The average of the function's values"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q7",
+      "concept_id": "linear_regression",
+      "question": "In simple linear regression, what does the slope represent?",
+      "options": [
+        "The expected change in y for a one-unit increase in x",
+        "The predicted value of y when x is 0",
+        "The average of all y values",
+        "The number of data points"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q8",
+      "concept_id": "linear_regression",
+      "question": "Which quantity does ordinary least squares regression minimize?",
+      "options": [
+        "The largest single residual",
+        "The sum of absolute residuals",
+        "The number of outliers",
+        "The sum of squared residuals"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q9",
+      "concept_id": "gradient_descent",
+      "question": "In gradient descent, in which direction is each parameter update taken?",
+      "options": [
+        "Along the gradient",
+        "Opposite the gradient",
+        "Perpendicular to the gradient",
+        "In a random direction"
+      ],
+      "explanation": ""
+    },
+    {
+      "id": "q10",
+      "concept_id": "gradient_descent",
+      "question": "What can happen if the learning rate in gradient descent is set too large?",
+      "options": [
+        "The loss function changes shape",
+        "The gradient becomes zero",
+        "Training always converges faster",
+        "The updates can overshoot the minimum and diverge"
+      ],
+      "explanation": ""
+    }
+  ]
+}

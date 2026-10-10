@@ -1,0 +1,104 @@
+{
+  "session_id": "3f2a9c1e7b4d4e8a9c0d5b6e1f2a3b4c",
+  "document_name": "intro_to_machine_learning.pdf",
+  "concepts": [
+    {
+      "id": "algebra",
+      "name": "Basic Algebra",
+      "description": "Manipulating equations and expressions with variables.",
+      "difficulty": "beginner",
+      "source_type": "inferred",
+      "prerequisite_ids": []
+    },
+    {
+      "id": "functions",
+      "name": "Functions",
+      "description": "Mapping inputs to outputs and reading function notation.",
+      "difficulty": "beginner",
+      "source_type": "inferred",
+      "prerequisite_ids": [
+        "algebra"
+      ]
+    },
+    {
+      "id": "derivatives",
+      "name": "Derivatives",
+      "description": "The instantaneous rate of change of a function.",
+      "difficulty": "intermediate",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "functions"
+      ]
+    },
+    {
+      "id": "probability",
+      "name": "Probability",
+      "description": "Quantifying how likely uncertain events are.",
+      "difficulty": "beginner",
+      "source_type": "direct",
+      "prerequisite_ids": []
+    },
+    {
+      "id": "statistics",
+      "name": "Statistics",
+      "description": "Summarizing and interpreting data using means, variance, and distributions.",
+      "difficulty": "intermediate",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "probability"
+      ]
+    },
+    {
+      "id": "statistical_inference",
+      "name": "Statistical Inference",
+      "description": "Drawing conclusions about a population from a sample.",
+      "difficulty": "advanced",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "statistics"
+      ]
+    },
+    {
+      "id": "linear_algebra",
+      "name": "Linear Algebra",
+      "description": "Working with vectors and matrices.",
+      "difficulty": "intermediate",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "algebra"
+      ]
+    },
+    {
+      "id": "linear_regression",
+      "name": "Linear Regression",
+      "description": "Modeling the relationship between variables with a line.",
+      "difficulty": "intermediate",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "statistics",
+        "linear_algebra"
+      ]
+    },
+    {
+      "id": "loss_functions",
+      "name": "Loss Functions",
+      "description": "Measuring how far a model's predictions are from the truth.",
+      "difficulty": "intermediate",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "functions"
+      ]
+    },
+    {
+      "id": "gradient_descent",
+      "name": "Gradient Descent",
+      "description": "Minimizing a loss by repeatedly stepping against the gradient.",
+      "difficulty": "advanced",
+      "source_type": "direct",
+      "prerequisite_ids": [
+        "derivatives",
+        "loss_functions"
+      ]
+    }
+  ]
+}

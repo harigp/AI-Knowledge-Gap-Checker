@@ -1,0 +1,109 @@
+{
+  "session_id": "3f2a9c1e7b4d4e8a9c0d5b6e1f2a3b4c",
+  "overall_score": 0.6,
+  "concept_scores": [
+    {
+      "concept_id": "algebra",
+      "correct": 0,
+      "total": 0,
+      "score": null,
+      "classification": "unknown"
+    },
+    {
+      "concept_id": "functions",
+      "correct": 0,
+      "total": 0,
+      "score": null,
+      "classification": "unknown"
+    },
+    {
+      "concept_id": "derivatives",
+      "correct": 2,
+      "total": 2,
+      "score": 1.0,
+      "classification": "strong"
+    },
+    {
+      "concept_id": "probability",
+      "correct": 0,
+      "total": 2,
+      "score": 0.0,
+      "classification": "weak"
+    },
+    {
+      "concept_id": "statistics",
+      "correct": 1,
+      "total": 2,
+      "score": 0.5,
+      "classification": "developing"
+    },
+    {
+      "concept_id": "statistical_inference",
+      "correct": 0,
+      "total": 0,
+      "score": null,
+      "classification": "unknown"
+    },
+    {
+      "concept_id": "linear_algebra",
+      "correct": 0,
+      "total": 0,
+      "score": null,
+      "classification": "unknown"
+    },
+    {
+      "concept_id": "linear_regression",
+      "correct": 1,
+      "total": 2,
+      "score": 0.5,
+      "classification": "developing"
+    },
+    {
+      "concept_id": "loss_functions",
+      "correct": 0,
+      "total": 0,
+      "score": null,
+      "classification": "unknown"
+    },
+    {
+      "concept_id": "gradient_descent",
+      "correct": 2,
+      "total": 2,
+      "score": 1.0,
+      "classification": "strong"
+    }
+  ],
+  "recommendations": [
+    {
+      "concept_id": "probability",
+      "concept_name": "Probability",
+      "score": 0.0,
+      "classification": "weak",
+      "descendant_count": 3,
+      "priority": 1.75,
+      "explanation": "Your quiz results suggest a potential gap in Probability (0% correct). 3 other concepts in your graph build on it, including Statistics. Review priority: 1.75. Review Probability before moving on to Statistics.",
+      "position": 1
+    },
+    {
+      "concept_id": "statistics",
+      "concept_name": "Statistics",
+      "score": 0.5,
+      "classification": "developing",
+      "descendant_count": 2,
+      "priority": 0.75,
+      "explanation": "You answered 50% of the Statistics questions correctly, so this concept may need reinforcement. 2 other concepts in your graph build on it, including Statistical Inference and Linear Regression. Review priority: 0.75. Review Statistics before moving on to Statistical Inference.",
+      "position": 2
+    },
+    {
+      "concept_id": "linear_regression",
+      "concept_name": "Linear Regression",
+      "score": 0.5,
+      "classification": "developing",
+      "descendant_count": 0,
+      "priority": 0.5,
+      "explanation": "You answered 50% of the Linear Regression questions correctly, so this concept may need reinforcement. No other concepts in your graph depend on it. Review priority: 0.50. Practice a few more Linear Regression questions to confirm your understanding.",
+      "position": 3
+    }
+  ],
+  "disclaimer": "Estimates are based on a short diagnostic quiz and are preliminary."
+}
