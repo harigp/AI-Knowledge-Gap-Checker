@@ -21,10 +21,10 @@ export const Header: React.FC<HeaderProps> = ({ currentStep = 'upload' }) => {
 
       {/* Right: Workflow Steps */}
       <div className="flex gap-2 text-xs font-medium">
-        <span className={currentStep === 'upload' ? 'text-indigo-600 font-bold' : 'text-slate-400'}>1. Upload</span>
-        <span className={currentStep === 'graph' ? 'text-indigo-600 font-bold' : 'text-slate-400'}>2. Graph</span>
-        <span className={currentStep === 'quiz' ? 'text-indigo-600 font-bold' : 'text-slate-400'}>3. Quiz</span>
-        <span className={currentStep === 'results' ? 'text-indigo-600 font-bold' : 'text-slate-400'}>4. Roadmap</span>
+        <span className={currentStep === 'upload' ? 'text-indigo-600 font-bold' : 'text-slate-400'}> 1. Upload </span>
+        <span className={currentStep === 'graph' ? 'text-indigo-600 font-bold' : 'text-slate-400'}> 2. Graph </span>
+        <span className={currentStep === 'quiz' ? 'text-indigo-600 font-bold' : 'text-slate-400'}> 3. Quiz </span>
+        <span className={currentStep === 'results' ? 'text-indigo-600 font-bold' : 'text-slate-400'}> 4. Roadmap </span>
       </div>
     </header>
   );
