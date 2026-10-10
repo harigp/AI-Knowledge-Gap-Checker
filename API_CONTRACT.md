@@ -1,7 +1,14 @@
 # ConceptGraph AI — Backend API Contract
 
-**Version:** 1.0.0  **Status:** Stable for frontend integration
-**Base URL (local):** `http://localhost:8000`  **Swagger UI:** `/docs`  **OpenAPI JSON:** `/openapi.json` (a copy is committed at `backend/openapi.json`)
+**Version:** 1.0.0
+
+**Status:** Stable for frontend integration
+
+**Base URL (local):** `http://localhost:8000`
+
+**Swagger UI:** `/docs`
+
+**OpenAPI JSON:** `/openapi.json` (a copy is committed at `backend/openapi.json`)
 
 > Breaking changes to anything in this document will be announced to the frontend team first and recorded in the [Changelog](#changelog).
 
