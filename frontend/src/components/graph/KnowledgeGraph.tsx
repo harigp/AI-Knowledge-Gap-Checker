@@ -3,6 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { ConceptNode } from '../../types';
 import type { ApiConcept } from '../../api/types';
 
+<<<<<<< HEAD
 // Before the quiz no mastery is known: concepts the notes cover are 'unassessed';
 // background knowledge the notes rely on (source_type 'inferred') is shown as 'prerequisite'.
 const toNode = (c: ApiConcept): ConceptNode => ({
@@ -14,6 +15,17 @@ const toNode = (c: ApiConcept): ConceptNode => ({
 
 export const KnowledgeGraph: React.FC = () => {
   const { setStep, analysis } = useApp();
+=======
+const mockNodes: ConceptNode[] = [
+  { id: '1', label: 'Linear Algebra', status: 'mastered', description: 'Vectors, matrices, and basic linear transformations.' },
+  { id: '2', label: 'Matrix Multiplication', status: 'mastered', description: 'Dot product of rows and columns.' },
+  { id: '3', label: 'Eigenvalues & Eigenvectors', status: 'gap', description: 'Characteristic equations and scalar transformations.' },
+  { id: '4', label: 'Principal Component Analysis (PCA)', status: 'prerequisite', description: 'Dimensionality reduction technique relying on Eigenvectors.' },
+];
+
+export const KnowledgeGraph: React.FC = () => {
+  const { setStep, isQuizCompleted } = useApp();
+>>>>>>> 7a21436 (update)
   const [selectedNode, setSelectedNode] = useState<ConceptNode | null>(null);
 
   const concepts = analysis?.concepts ?? [];
@@ -33,31 +45,51 @@ export const KnowledgeGraph: React.FC = () => {
   }
 
   const getStatusColor = (status: ConceptNode['status']) => {
+    // Before quiz: render neutral cards
+    if (!isQuizCompleted) {
+      return 'bg-gray-100 border-gray-300 text-gray-800 hover:bg-gray-200';
+    }
+
+    // After quiz: reveal statuses
     switch (status) {
-      case 'mastered': return 'bg-green-100 border-green-500 text-green-800';
+      case 'mastered': return 'bg-emerald-100 border-emerald-500 text-emerald-800';
       case 'gap': return 'bg-red-100 border-red-500 text-red-800';
+<<<<<<< HEAD
       case 'prerequisite': return 'bg-blue-100 border-blue-500 text-blue-800';
       case 'unassessed': return 'bg-gray-100 border-gray-400 text-gray-800';
+=======
+      case 'prerequisite': return 'bg-sky-100 border-sky-500 text-sky-800';
+>>>>>>> 7a21436 (update)
     }
   };
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 border-b pb-4">
         <div>
+<<<<<<< HEAD
           <h2 className="text-2xl font-bold">Concept Knowledge Graph</h2>
           <p className="text-gray-600 text-sm">
             {analysis.document_name} &middot; {concepts.length} concepts. Click on a concept node to view details.
+=======
+          <h2 className="text-2xl font-bold text-gray-900">Extracted Concepts</h2>
+          <p className="text-gray-600 text-sm">
+            {isQuizCompleted 
+              ? 'Here is your gap analysis based on your assessment results.' 
+              : 'Review the extracted concepts from your document, then take the assessment to identify your knowledge gaps.'}
+>>>>>>> 7a21436 (update)
           </p>
         </div>
+
         <button
-          onClick={() => setStep('quiz')}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+          onClick={() => setStep(isQuizCompleted ? 'roadmap' : 'quiz')}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-lg shadow transition"
         >
-          Take Assessment Quiz &rarr;
+          {isQuizCompleted ? 'View Learning Roadmap \u2192' : 'Take Assessment Quiz \u2192'}
         </button>
       </div>
 
+<<<<<<< HEAD
       {/* Legend */}
       <div className="flex gap-4 mb-6 text-sm">
         <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-green-500" /> Mastered</span>
@@ -70,10 +102,25 @@ export const KnowledgeGraph: React.FC = () => {
         {/* Graph Visual Grid */}
         <div className="md:col-span-2 border rounded-xl p-6 bg-white shadow-sm min-h-[350px] flex flex-wrap gap-4 items-center justify-center">
           {nodes.map((node) => (
+=======
+      {/* ONLY show status legend AFTER quiz is completed */}
+      {isQuizCompleted && (
+        <div className="flex items-center gap-6 mb-6 text-sm font-medium">
+          <span className="flex items-center gap-2"><span className="w-3.5 h-3.5 rounded-full bg-emerald-500" /> Mastered</span>
+          <span className="flex items-center gap-2"><span className="w-3.5 h-3.5 rounded-full bg-red-500" /> Knowledge Gap</span>
+          <span className="flex items-center gap-2"><span className="w-3.5 h-3.5 rounded-full bg-sky-500" /> Prerequisite</span>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Graph Visual Grid */}
+        <div className="md:col-span-2 border border-gray-200 rounded-2xl p-6 bg-white shadow-sm min-h-[350px] flex flex-wrap gap-4 items-center justify-center">
+          {mockNodes.map((node) => (
+>>>>>>> 7a21436 (update)
             <button
               key={node.id}
               onClick={() => setSelectedNode(node)}
-              className={`p-4 rounded-lg border-2 font-medium cursor-pointer transition shadow-sm hover:scale-105 ${getStatusColor(node.status)}`}
+              className={`p-4 rounded-xl border-2 font-semibold cursor-pointer transition-all duration-200 shadow-sm hover:scale-105 ${getStatusColor(node.status)}`}
             >
               {node.label}
             </button>
@@ -81,10 +128,11 @@ export const KnowledgeGraph: React.FC = () => {
         </div>
 
         {/* Node Sidebar Details */}
-        <div className="border rounded-xl p-6 bg-white shadow-sm">
-          <h3 className="font-semibold text-lg border-b pb-2 mb-3">Concept Details</h3>
+        <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm">
+          <h3 className="font-semibold text-lg text-gray-900 border-b pb-2 mb-3">Concept Details</h3>
           {selectedNode ? (
             <div>
+<<<<<<< HEAD
               <h4 className="font-bold text-gray-900">{selectedNode.label}</h4>
               <span className={`inline-block my-2 px-2 py-0.5 text-xs font-semibold rounded uppercase ${getStatusColor(selectedNode.status)}`}>
                 {selectedNode.status}
@@ -110,12 +158,26 @@ export const KnowledgeGraph: React.FC = () => {
                   </div>
                 </dl>
               )}
+=======
+              <h4 className="font-bold text-lg text-gray-900">{selectedNode.label}</h4>
+              
+              {/* Hide status badge until quiz is done */}
+              {isQuizCompleted && (
+                <span className={`inline-block my-2 px-2.5 py-1 text-xs font-bold rounded-md uppercase tracking-wider ${getStatusColor(selectedNode.status)}`}>
+                  {selectedNode.status}
+                </span>
+              )}
+
+              <p className="text-sm text-gray-600 mt-2 leading-relaxed">{selectedNode.description}</p>
+>>>>>>> 7a21436 (update)
             </div>
           ) : (
-            <p className="text-gray-400 text-sm italic">Select a node to inspect concept gaps.</p>
+            <p className="text-gray-400 text-sm italic">Click on a concept node to view details.</p>
           )}
         </div>
       </div>
     </div>
   );
 };
+
+export default KnowledgeGraph;

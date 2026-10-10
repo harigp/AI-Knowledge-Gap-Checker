@@ -37,7 +37,8 @@ const mockQuestions: Question[] = [
 ];
 
 export const QuizRunner: React.FC = () => {
-  const { setStep } = useApp();
+  // 1. Destructure setIsQuizCompleted here
+  const { setStep, setIsQuizCompleted } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -59,6 +60,8 @@ export const QuizRunner: React.FC = () => {
       setSelectedOption(null);
     } else {
       setIsCompleted(true);
+      // 2. Mark quiz as completed in global state
+      setIsQuizCompleted(true);
     }
   };
 
@@ -97,7 +100,7 @@ export const QuizRunner: React.FC = () => {
           <button
             key={idx}
             onClick={() => handleSelect(idx)}
-            className={`w-text text-left w-full p-3.5 rounded-lg border transition font-medium text-sm ${
+            className={`w-full text-left p-3.5 rounded-lg border transition font-medium text-sm ${
               selectedOption === idx
                 ? 'border-blue-600 bg-blue-50 text-blue-900'
                 : 'border-gray-200 hover:bg-gray-50 text-gray-700'
