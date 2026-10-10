@@ -2,3 +2,12 @@ venv/
 .env
 .env.*
 ~$*
+# Ignore Node dependencies
+node_modules/
+
+# Ignore build outputs
+dist/
+build/
+
+# Ignore log files
+*.log
