@@ -1,4 +1,28 @@
-venv/
+# Secrets
 .env
 .env.*
+!.env.example
+
+# Local docs
+AIKnowledgeGapCheckerSpecs.docx
 ~$*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Node dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
