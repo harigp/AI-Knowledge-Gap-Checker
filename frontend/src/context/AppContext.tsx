@@ -1,26 +1,46 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { AppStep } from '../types';
-import type { AnalyzeResponse } from '../api/types';
+import type { AnalyzeResponse, AssessmentResults } from '../api/types';
 
 interface AppContextType {
-  currentStep: Step;
-  setStep: (step: Step) => void;
+  currentStep: AppStep;
+  setStep: (step: AppStep) => void;
   file: File | null;
   setFile: (file: File | null) => void;
   // Result of POST /api/analyze; analysis.session_id is used by the quiz/results calls.
   analysis: AnalyzeResponse | null;
   setAnalysis: (analysis: AnalyzeResponse | null) => void;
+  isQuizCompleted: boolean;
+  setIsQuizCompleted: (completed: boolean) => void;
+  // Result of POST /api/quiz/{session_id}/submit: scores, gaps, recommendations, learning path.
+  results: AssessmentResults | null;
+  setResults: (results: AssessmentResults | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [currentStep, setCurrentStep] = useState<Step>('upload');
+  const [currentStep, setCurrentStep] = useState<AppStep>('upload');
   const [file, setFile] = useState<File | null>(null);
   const [analysis, setAnalysis] = useState<AnalyzeResponse | null>(null);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
+  const [results, setResults] = useState<AssessmentResults | null>(null);
 
   return (
-    <AppContext.Provider value={{ currentStep, setStep, file, setFile, analysis, setAnalysis }}>
+    <AppContext.Provider
+      value={{
+        currentStep,
+        setStep: setCurrentStep,
+        file,
+        setFile,
+        analysis,
+        setAnalysis,
+        isQuizCompleted,
+        setIsQuizCompleted,
+        results,
+        setResults,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -1,23 +1,28 @@
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ConceptNode } from '../../types';
-import type { ApiConcept } from '../../api/types';
+import type { ApiConcept, Mastery } from '../../api/types';
 
 // Before the quiz no mastery is known: concepts the notes cover are 'unassessed';
 // background knowledge the notes rely on (source_type 'inferred') is shown as 'prerequisite'.
-const toNode = (c: ApiConcept): ConceptNode => ({
-  id: c.id,
-  label: c.name,
-  status: c.source_type === 'inferred' ? 'prerequisite' : 'unassessed',
-  description: c.description,
-});
+// After the quiz, assessed concepts use the backend's mastery: strong -> mastered, weak/developing -> gap.
+const toNode = (c: ApiConcept, mastery?: Mastery): ConceptNode => {
+  let status: ConceptNode['status'] = c.source_type === 'inferred' ? 'prerequisite' : 'unassessed';
+  if (mastery === 'strong') status = 'mastered';
+  else if (mastery === 'weak' || mastery === 'developing') status = 'gap';
+  return { id: c.id, label: c.name, status, description: c.description };
+};
 
 export const KnowledgeGraph: React.FC = () => {
-  const { setStep, analysis } = useApp();
+  const { setStep, analysis, isQuizCompleted, results } = useApp();
   const [selectedNode, setSelectedNode] = useState<ConceptNode | null>(null);
 
   const concepts = analysis?.concepts ?? [];
-  const nodes = useMemo(() => concepts.map(toNode), [concepts]);
+  const masteryById = useMemo(
+    () => new Map((results?.concept_scores ?? []).map((s) => [s.concept_id, s.mastery])),
+    [results],
+  );
+  const nodes = useMemo(() => concepts.map((c) => toNode(c, masteryById.get(c.id))), [concepts, masteryById]);
   const conceptById = useMemo(() => new Map(concepts.map((c) => [c.id, c])), [concepts]);
   const selectedConcept = selectedNode ? conceptById.get(selectedNode.id) : undefined;
 
