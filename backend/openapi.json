@@ -1,0 +1,1404 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ConceptGraph AI API",
+    "description": "Backend for **ConceptGraph AI** \u2014 an AI-powered knowledge gap detector.\n\nUpload lecture notes \u2192 get a prerequisite concept graph \u2192 take a diagnostic quiz \u2192\nreceive explainable knowledge gaps and a prerequisite-ordered learning path.\n\nAll errors use the envelope `{\"error\": {\"code\", \"message\", \"details\"}}`. See API_CONTRACT.md.\n",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analyze": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Upload a PDF and build its concept graph",
+        "operationId": "analyze_api_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_api_analyze_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/graph/{session_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Graph",
+        "operationId": "get_graph_api_graph__session_id__get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        }
+      }
+    },
+    "/api/quiz/{session_id}": {
+      "get": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Get the diagnostic quiz (answers excluded); generated on first call",
+        "operationId": "get_quiz_api_quiz__session_id__get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/quiz/{session_id}/submit": {
+      "post": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Submit answers; returns scores, gaps, recommendations and learning path",
+        "operationId": "submit_quiz_api_quiz__session_id__submit_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuizSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentResults"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        }
+      }
+    },
+    "/api/results/{session_id}": {
+      "get": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Get Results",
+        "operationId": "get_results_api_results__session_id__get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentResults"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalyzeResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "document_name": {
+            "type": "string",
+            "title": "Document Name"
+          },
+          "concepts": {
+            "items": {
+              "$ref": "#/components/schemas/Concept"
+            },
+            "type": "array",
+            "title": "Concepts"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/Edge"
+            },
+            "type": "array",
+            "title": "Edges"
+          },
+          "topological_order": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Topological Order",
+            "description": "Concept IDs in prerequisite-first order."
+          },
+          "processing_status": {
+            "$ref": "#/components/schemas/ProcessingStatus"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "document_name",
+          "concepts",
+          "edges",
+          "topological_order",
+          "processing_status",
+          "expires_at"
+        ],
+        "title": "AnalyzeResponse"
+      },
+      "AnswerSubmission": {
+        "properties": {
+          "question_id": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Question Id",
+            "examples": [
+              "q1"
+            ]
+          },
+          "selected_option_id": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "title": "Selected Option Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "question_id",
+          "selected_option_id"
+        ],
+        "title": "AnswerSubmission"
+      },
+      "AssessmentResults": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "submitted_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Submitted At"
+          },
+          "overall_score": {
+            "type": "number",
+            "title": "Overall Score"
+          },
+          "total_correct": {
+            "type": "integer",
+            "title": "Total Correct"
+          },
+          "total_questions": {
+            "type": "integer",
+            "title": "Total Questions"
+          },
+          "unanswered_count": {
+            "type": "integer",
+            "title": "Unanswered Count"
+          },
+          "concept_scores": {
+            "items": {
+              "$ref": "#/components/schemas/ConceptScore"
+            },
+            "type": "array",
+            "title": "Concept Scores"
+          },
+          "question_results": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionResult"
+            },
+            "type": "array",
+            "title": "Question Results"
+          },
+          "learning_gaps": {
+            "items": {
+              "$ref": "#/components/schemas/LearningGap"
+            },
+            "type": "array",
+            "title": "Learning Gaps"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/Recommendation"
+            },
+            "type": "array",
+            "title": "Recommendations"
+          },
+          "learning_path": {
+            "$ref": "#/components/schemas/LearningPath"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "submitted_at",
+          "overall_score",
+          "total_correct",
+          "total_questions",
+          "unanswered_count",
+          "concept_scores",
+          "question_results",
+          "learning_gaps",
+          "recommendations",
+          "learning_path"
+        ],
+        "title": "AssessmentResults"
+      },
+      "Body_analyze_api_analyze_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "description": "Lecture notes PDF (max 10 MB, 50 pages)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_analyze_api_analyze_post"
+      },
+      "Concept": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Stable snake_case identifier.",
+            "examples": [
+              "probability"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": [
+              "Probability"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "beginner",
+              "intermediate",
+              "advanced"
+            ],
+            "title": "Difficulty"
+          },
+          "prerequisites": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prerequisites",
+            "description": "IDs of concepts that must be understood first."
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "document",
+              "inferred"
+            ],
+            "title": "Source Type",
+            "description": "'document' = covered in the uploaded notes; 'inferred' = assumed prior knowledge."
+          },
+          "descendant_count": {
+            "type": "integer",
+            "title": "Descendant Count",
+            "description": "Number of unique concepts that depend on this one (directly or indirectly)."
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level",
+            "description": "Longest prerequisite chain length from a root concept (roots are 0). Useful for layered layouts."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "difficulty",
+          "prerequisites",
+          "source_type",
+          "descendant_count",
+          "level"
+        ],
+        "title": "Concept"
+      },
+      "ConceptScore": {
+        "properties": {
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "concept_name": {
+            "type": "string",
+            "title": "Concept Name"
+          },
+          "correct": {
+            "type": "integer",
+            "title": "Correct"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "correct/total in [0,1]; null when unassessed."
+          },
+          "mastery": {
+            "type": "string",
+            "enum": [
+              "strong",
+              "developing",
+              "weak",
+              "unassessed"
+            ],
+            "title": "Mastery"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "concept_id",
+          "concept_name",
+          "correct",
+          "total",
+          "score",
+          "mastery"
+        ],
+        "title": "ConceptScore"
+      },
+      "Edge": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "examples": [
+              "probability->statistics"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "Prerequisite concept ID.",
+            "examples": [
+              "probability"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "title": "Target",
+            "description": "Dependent concept ID.",
+            "examples": [
+              "statistics"
+            ]
+          },
+          "relationship": {
+            "type": "string",
+            "const": "prerequisite",
+            "title": "Relationship",
+            "default": "prerequisite"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "target"
+        ],
+        "title": "Edge"
+      },
+      "ErrorDetail": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "examples": [
+              "session_not_found"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "examples": [
+              "Session not found or expired. Upload the document again."
+            ]
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "GraphResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "document_name": {
+            "type": "string",
+            "title": "Document Name"
+          },
+          "concepts": {
+            "items": {
+              "$ref": "#/components/schemas/Concept"
+            },
+            "type": "array",
+            "title": "Concepts"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/Edge"
+            },
+            "type": "array",
+            "title": "Edges"
+          },
+          "topological_order": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Topological Order"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "document_name",
+          "concepts",
+          "edges",
+          "topological_order"
+        ],
+        "title": "GraphResponse"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "service": {
+            "type": "string",
+            "title": "Service"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "ai_configured": {
+            "type": "boolean",
+            "title": "Ai Configured"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "service",
+          "version",
+          "ai_configured",
+          "timestamp"
+        ],
+        "title": "HealthResponse"
+      },
+      "LearningGap": {
+        "properties": {
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "concept_name": {
+            "type": "string",
+            "title": "Concept Name"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "mastery": {
+            "type": "string",
+            "enum": [
+              "weak",
+              "developing"
+            ],
+            "title": "Mastery"
+          },
+          "descendant_count": {
+            "type": "integer",
+            "title": "Descendant Count"
+          },
+          "downstream_concept_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Downstream Concept Ids"
+          },
+          "priority": {
+            "type": "number",
+            "title": "Priority",
+            "description": "(1 - score) * (1 + weight * descendant_count)"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "concept_id",
+          "concept_name",
+          "score",
+          "mastery",
+          "descendant_count",
+          "downstream_concept_ids",
+          "priority",
+          "reason"
+        ],
+        "title": "LearningGap"
+      },
+      "LearningPath": {
+        "properties": {
+          "total_steps": {
+            "type": "integer",
+            "title": "Total Steps"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/LearningPathStep"
+            },
+            "type": "array",
+            "title": "Steps"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "total_steps",
+          "summary",
+          "steps"
+        ],
+        "title": "LearningPath"
+      },
+      "LearningPathStep": {
+        "properties": {
+          "step": {
+            "type": "integer",
+            "title": "Step"
+          },
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "concept_name": {
+            "type": "string",
+            "title": "Concept Name"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "review",
+              "verify"
+            ],
+            "title": "Action"
+          },
+          "mastery": {
+            "type": "string",
+            "enum": [
+              "strong",
+              "developing",
+              "weak",
+              "unassessed"
+            ],
+            "title": "Mastery"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "prerequisites_in_path": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prerequisites In Path",
+            "description": "Earlier steps this step builds on."
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "step",
+          "concept_id",
+          "concept_name",
+          "action",
+          "mastery",
+          "score",
+          "priority",
+          "prerequisites_in_path",
+          "reason"
+        ],
+        "title": "LearningPathStep"
+      },
+      "ProcessingStatus": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "completed",
+            "title": "Status"
+          },
+          "processing_mode": {
+            "type": "string",
+            "enum": [
+              "direct",
+              "chunked"
+            ],
+            "title": "Processing Mode"
+          },
+          "page_count": {
+            "type": "integer",
+            "title": "Page Count"
+          },
+          "estimated_tokens": {
+            "type": "integer",
+            "title": "Estimated Tokens"
+          },
+          "chunk_count": {
+            "type": "integer",
+            "title": "Chunk Count"
+          },
+          "concept_count": {
+            "type": "integer",
+            "title": "Concept Count"
+          },
+          "ai_requests_used": {
+            "type": "integer",
+            "title": "Ai Requests Used"
+          },
+          "quiz_status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "ready"
+            ],
+            "title": "Quiz Status",
+            "description": "'pending' = quiz will be generated on first GET /api/quiz/{session_id}."
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "description": "Non-fatal adjustments made while validating AI output."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "processing_mode",
+          "page_count",
+          "estimated_tokens",
+          "chunk_count",
+          "concept_count",
+          "ai_requests_used",
+          "quiz_status"
+        ],
+        "title": "ProcessingStatus"
+      },
+      "QuestionResult": {
+        "properties": {
+          "question_id": {
+            "type": "string",
+            "title": "Question Id"
+          },
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "selected_option_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Option Id",
+            "description": "null if the question was left unanswered."
+          },
+          "correct_option_id": {
+            "type": "string",
+            "title": "Correct Option Id"
+          },
+          "is_correct": {
+            "type": "boolean",
+            "title": "Is Correct"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "question_id",
+          "concept_id",
+          "question",
+          "selected_option_id",
+          "correct_option_id",
+          "is_correct",
+          "explanation"
+        ],
+        "title": "QuestionResult"
+      },
+      "QuizOption": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "title": "Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "title": "QuizOption"
+      },
+      "QuizQuestion": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "examples": [
+              "q1"
+            ]
+          },
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "concept_name": {
+            "type": "string",
+            "title": "Concept Name"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/QuizOption"
+            },
+            "type": "array",
+            "maxItems": 4,
+            "minItems": 4,
+            "title": "Options"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "concept_id",
+          "concept_name",
+          "question",
+          "options"
+        ],
+        "title": "QuizQuestion",
+        "description": "A question as shown to the student. Never contains the answer or explanation."
+      },
+      "QuizResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "total_questions": {
+            "type": "integer",
+            "title": "Total Questions"
+          },
+          "assessed_concept_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Assessed Concept Ids"
+          },
+          "submitted": {
+            "type": "boolean",
+            "title": "Submitted"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/QuizQuestion"
+            },
+            "type": "array",
+            "title": "Questions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "total_questions",
+          "assessed_concept_ids",
+          "submitted",
+          "questions"
+        ],
+        "title": "QuizResponse"
+      },
+      "QuizSubmitRequest": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/AnswerSubmission"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Answers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "answers"
+        ],
+        "title": "QuizSubmitRequest"
+      },
+      "Recommendation": {
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          },
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "concept_name": {
+            "type": "string",
+            "title": "Concept Name"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "review",
+              "verify"
+            ],
+            "title": "Action",
+            "description": "'review' = assessed as weak/developing; 'verify' = unassessed prerequisite of a gap."
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "mastery": {
+            "type": "string",
+            "enum": [
+              "strong",
+              "developing",
+              "weak",
+              "unassessed"
+            ],
+            "title": "Mastery"
+          },
+          "descendant_count": {
+            "type": "integer",
+            "title": "Descendant Count"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rank",
+          "concept_id",
+          "concept_name",
+          "action",
+          "score",
+          "mastery",
+          "descendant_count",
+          "priority",
+          "reason"
+        ],
+        "title": "Recommendation"
+      }
+    }
+  }
+}

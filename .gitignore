@@ -1,2 +1,13 @@
 .env
+AIKnowledgeGapCheckerSpecs.docx
 ~$*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
