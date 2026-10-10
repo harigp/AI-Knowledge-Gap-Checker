@@ -3,6 +3,7 @@ import { useApp } from './context/AppContext';
 import { Header } from './components/layout/Header';
 import { FileUploader } from './components/upload/FileUploader';
 import { ProcessingState } from './components/upload/ProcessingState';
+import { KnowledgeGraph } from './components/graph/KnowledgeGraph';
 
 export default function App() {
   const { currentStep } = useApp();
@@ -14,7 +15,7 @@ export default function App() {
       <main className="flex-1 p-6 container mx-auto">
         {currentStep === 'upload' && <FileUploader />}
         {currentStep === 'processing' && <ProcessingState />}
-        {currentStep === 'graph' && <div>[ Knowledge Graph View Placeholder ]</div>}
+        {currentStep === 'graph' && <KnowledgeGraph />}
         {currentStep === 'quiz' && <div>[ Quiz Screen Placeholder ]</div>}
         {currentStep === 'roadmap' && <div>[ Roadmap Screen Placeholder ]</div>}
       </main>

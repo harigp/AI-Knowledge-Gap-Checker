@@ -33,3 +33,23 @@ export interface AppState {
   results: AssessmentResult | null;
   currentStep: AppStep;
 }
+
+export type NodeStatus = 'mastered' | 'gap' | 'prerequisite';
+
+export interface ConceptNode {
+  id: string;
+  label: string;
+  status: NodeStatus;
+  description: string;
+}
+
+export interface ConceptEdge {
+  id: string;
+  source: string;
+  target: string;
+}
+
+export interface GraphData {
+  nodes: ConceptNode[];
+  edges: ConceptEdge[];
+}
