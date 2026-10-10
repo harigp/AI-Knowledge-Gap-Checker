@@ -4,6 +4,7 @@ import { Header } from './components/layout/Header';
 import { FileUploader } from './components/upload/FileUploader';
 import { ProcessingState } from './components/upload/ProcessingState';
 import { KnowledgeGraph } from './components/graph/KnowledgeGraph';
+import { QuizRunner } from './components/quiz/QuizRunner';
 
 export default function App() {
   const { currentStep } = useApp();
@@ -16,7 +17,7 @@ export default function App() {
         {currentStep === 'upload' && <FileUploader />}
         {currentStep === 'processing' && <ProcessingState />}
         {currentStep === 'graph' && <KnowledgeGraph />}
-        {currentStep === 'quiz' && <div>[ Quiz Screen Placeholder ]</div>}
+        {currentStep === 'quiz' && <QuizRunner />}
         {currentStep === 'roadmap' && <div>[ Roadmap Screen Placeholder ]</div>}
       </main>
     </div>
