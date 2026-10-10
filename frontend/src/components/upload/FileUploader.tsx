@@ -8,7 +8,7 @@ export const FileUploader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const allowedTypes = ['.pdf', '.txt', '.md'];
+  const allowedTypes = ['.pdf']; // backend accepts text-based PDFs only (max 10 MB, 50 pages)
 
   const validateAndSetFile = (file: File) => {
     const extension = '.' + file.name.split('.').pop()?.toLowerCase();
@@ -57,7 +57,7 @@ export const FileUploader: React.FC = () => {
   return (
     <div style={{ maxWidth: '600px', margin: '40px auto', padding: '20px', textAlign: 'center' }}>
       <h2>Upload Syllabus or Study Notes</h2>
-      <p>Upload a PDF, TXT, or MD file to analyze knowledge gaps.</p>
+      <p>Upload a PDF to analyze knowledge gaps.</p>
 
       <div
         onDragEnter={handleDrag}
@@ -77,12 +77,12 @@ export const FileUploader: React.FC = () => {
         <input
           ref={inputRef}
           type="file"
-          accept=".pdf,.txt,.md"
+          accept=".pdf,application/pdf"
           onChange={handleChange}
           style={{ display: 'none' }}
         />
         <p>{selectedFile ? `Selected: ${selectedFile.name}` : 'Drag & drop your file here, or click to browse'}</p>
-        <small style={{ color: '#666' }}>Supported formats: PDF, TXT, MD</small>
+        <small style={{ color: '#666' }}>Supported format: PDF with selectable text (max 10 MB, 50 pages)</small>
       </div>
 
       {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}

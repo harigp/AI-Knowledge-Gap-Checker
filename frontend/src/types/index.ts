@@ -34,7 +34,7 @@ export interface AppState {
   currentStep: AppStep;
 }
 
-export type NodeStatus = 'mastered' | 'gap' | 'prerequisite';
+export type NodeStatus = 'mastered' | 'gap' | 'prerequisite' | 'unassessed';
 
 export interface ConceptNode {
   id: string;
