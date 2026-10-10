@@ -1,11 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { AppStep } from '../types';
+import type { AnalyzeResponse } from '../api/types';
 
 interface AppContextType {
   currentStep: AppStep;
   setStep: (step: AppStep) => void;
   file: File | null;
   setFile: (file: File | null) => void;
+  // Result of POST /api/analyze; analysis.session_id is used by the quiz/results calls.
+  analysis: AnalyzeResponse | null;
+  setAnalysis: (analysis: AnalyzeResponse | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -13,9 +17,10 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentStep, setStep] = useState<AppStep>('upload');
   const [file, setFile] = useState<File | null>(null);
+  const [analysis, setAnalysis] = useState<AnalyzeResponse | null>(null);
 
   return (
-    <AppContext.Provider value={{ currentStep, setStep, file, setFile }}>
+    <AppContext.Provider value={{ currentStep, setStep, file, setFile, analysis, setAnalysis }}>
       {children}
     </AppContext.Provider>
   );
