@@ -81,6 +81,10 @@ class Settings:
     cors_origins: list[str] = field(
         default_factory=lambda: _list("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
     )
+    # Also allow any local dev server port (Vite moves to 5174+ when 5173 is busy). "" disables.
+    cors_origin_regex: str = field(
+        default_factory=lambda: os.getenv("CORS_ORIGIN_REGEX", r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$")
+    )
     rate_limit_analyze_per_minute: int = field(default_factory=lambda: _int("RATE_LIMIT_ANALYZE_PER_MINUTE", 5))
     rate_limit_default_per_minute: int = field(default_factory=lambda: _int("RATE_LIMIT_DEFAULT_PER_MINUTE", 120))
 
