@@ -44,6 +44,13 @@ export default {
         gray: coolNeutral,
         slate: coolNeutral,
       },
+      // Terminal-style cursor used in the logo.
+      keyframes: {
+        blink: { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0' } },
+      },
+      animation: {
+        blink: 'blink 1.1s step-end infinite',
+      },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
       },

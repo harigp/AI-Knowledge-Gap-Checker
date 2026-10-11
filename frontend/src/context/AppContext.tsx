@@ -20,7 +20,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [currentStep, setCurrentStep] = useState<AppStep>('upload');
+  const [currentStep, setCurrentStep] = useState<AppStep>('landing');
   const [file, setFile] = useState<File | null>(null);
   const [analysis, setAnalysis] = useState<AnalyzeResponse | null>(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);

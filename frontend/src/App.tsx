@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from './context/AppContext';
 import { Header } from './components/layout/Header';
+import { LandingPage } from './components/landing/LandingPage';
 import { FileUploader } from './components/upload/FileUploader';
 import { ProcessingState } from './components/upload/ProcessingState';
 import { KnowledgeGraph } from './components/graph/KnowledgeGraph';
@@ -15,6 +16,10 @@ export default function App() {
     setFile(file);
     setStep('processing');
   };
+
+  if (currentStep === 'landing') {
+    return <LandingPage onGetStarted={() => setStep('upload')} />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900">
