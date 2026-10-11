@@ -78,19 +78,42 @@ class GeminiJsonGenerator:
         """Try the primary model; on a recoverable failure (timeout, 429, 5xx) switch to the fallback model
         immediately (if configured), which then gets the normal retry policy."""
         client = self._get_client()
-        primary, fallback = self._settings.gemini_model, self._settings.gemini_fallback_model
-        if fallback and fallback != primary:
+        primary, fallback_1, fallback_2, fallback_3, fallback_4 = (
+            self._settings.gemini_model,
+            self._settings.gemini_fallback_model_1,
+            self._settings.gemini_fallback_model_2,
+            self._settings.gemini_fallback_model_3,
+            self._settings.gemini_fallback_model_4
+        )
+        if fallback_1 and fallback_1 != primary:
             try:
                 return await self._attempt(client, primary, task, system, prompt, schema, budget, attempts=1)
             except _Recoverable as exc:
                 logger.warning("Gemini %s: primary model unavailable, failing over to fallback model", task)
                 last = exc
             try:
-                return await self._attempt(client, fallback, task, system, prompt, schema, budget,
+                return await self._attempt(client, fallback_1, task, system, prompt, schema, budget,
                                            attempts=self._settings.gemini_max_retries + 1)
             except _Recoverable as exc:
                 last = exc
-        else:
+        elif fallback_2 and fallback_2 != primary:
+            try:
+                return await self._attempt(client, fallback_2, task, system, prompt, schema, budget,
+                                           attempts=self._settings.gemini_max_retries + 1)
+            except _Recoverable as exc:
+                last = exc
+        elif fallback_3 and fallback_3 != primary:
+            try:
+                return await self._attempt(client, fallback_3, task, system, prompt, schema, budget,
+                                           attempts=self._settings.gemini_max_retries + 1)
+            except _Recoverable as exc:
+                last = exc
+        elif fallback_4 and fallback_4 != primary:
+            try:
+                return await self._attempt(client, fallback_4, task, system, prompt, schema, budget,
+                                           attempts=self._settings.gemini_max_retries + 1)
+            except _Recoverable as exc:
+                last = exc
             try:
                 return await self._attempt(client, primary, task, system, prompt, schema, budget,
                                            attempts=self._settings.gemini_max_retries + 1)
