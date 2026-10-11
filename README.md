@@ -1,4 +1,4 @@
-# ConceptGraph AI
+# Kno(w)Hol(e)
 
 *Discover What You Don't Know*
 
