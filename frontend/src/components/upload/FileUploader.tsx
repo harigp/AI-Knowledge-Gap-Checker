@@ -69,7 +69,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onAnalyze, isProcess
           <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
           Prerequisite-Aware Gap Detection
         </div>
-        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-indigo-400 sm:text-4xl">
           Discover Your Learning Gaps
         </h1>
         <p className="mt-2 text-sm text-slate-400">

@@ -56,7 +56,7 @@ export const ProcessingState: React.FC = () => {
         <p style={{ color: '#b91c1c', margin: '16px 0' }}>{error}</p>
         <button
           onClick={() => setStep('upload')}
-          style={{ padding: '10px 24px', backgroundColor: '#2563eb', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{ padding: '10px 24px', backgroundColor: '#5f3ded', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
         >
           Try Another File
         </button>
@@ -67,20 +67,20 @@ export const ProcessingState: React.FC = () => {
   return (
     <div style={{ maxWidth: '500px', margin: '60px auto', padding: '20px', textAlign: 'center' }}>
       <h2>Analyzing Document</h2>
-      <p style={{ color: '#555' }}>Processing: <strong>{file?.name || 'Uploaded document'}</strong></p>
+      <p style={{ color: '#4f566b' }}>Processing: <strong>{file?.name || 'Uploaded document'}</strong></p>
 
-      <div style={{ width: '100%', backgroundColor: '#e5e7eb', borderRadius: '8px', height: '12px', margin: '24px 0', overflow: 'hidden' }}>
+      <div style={{ width: '100%', backgroundColor: '#e2e5ef', borderRadius: '8px', height: '12px', margin: '24px 0', overflow: 'hidden' }}>
         <div
           style={{
             width: `${progress}%`,
-            backgroundColor: '#2563eb',
+            backgroundColor: '#5f3ded',
             height: '100%',
             transition: 'width 0.4s ease-in-out',
           }}
         />
       </div>
 
-      <p style={{ fontStyle: 'italic', color: '#4b5563' }}>{statusMessage}</p>
+      <p style={{ fontStyle: 'italic', color: '#4f566b' }}>{statusMessage}</p>
     </div>
   );
 };

@@ -30,7 +30,6 @@ export const Header: React.FC<HeaderProps> = ({ currentStep, onNavigate }) => {
             <div className="flex items-center gap-2">
               <span className="text-lg font-bold tracking-tight text-white">Kno(w)Hol(e)</span>
               <span className="rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium tracking-wide text-indigo-400">
-                HackRU '26
               </span>
             </div>
             <p className="text-xs text-slate-400">Discover What You Don't Know</p>
