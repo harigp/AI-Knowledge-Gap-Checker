@@ -66,11 +66,11 @@ export const FileUploader: React.FC = () => {
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
         style={{
-          border: dragActive ? '2px dashed #3b82f6' : '2px dashed #ccc',
+          border: dragActive ? '2px dashed #7457f6' : '2px dashed #cbd0de',
           borderRadius: '8px',
           padding: '40px',
           cursor: 'pointer',
-          backgroundColor: dragActive ? '#eff6ff' : '#fafafa',
+          backgroundColor: dragActive ? '#f3f2ff' : '#ffffff',
           margin: '20px 0',
         }}
       >
@@ -82,7 +82,7 @@ export const FileUploader: React.FC = () => {
           style={{ display: 'none' }}
         />
         <p>{selectedFile ? `Selected: ${selectedFile.name}` : 'Drag & drop your file here, or click to browse'}</p>
-        <small style={{ color: '#666' }}>Supported format: PDF with selectable text (max 10 MB, 50 pages)</small>
+        <small style={{ color: '#6b7287' }}>Supported format: PDF with selectable text (max 10 MB, 50 pages)</small>
       </div>
 
       {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
@@ -93,7 +93,7 @@ export const FileUploader: React.FC = () => {
         style={{
           padding: '10px 24px',
           fontSize: '16px',
-          backgroundColor: selectedFile ? '#2563eb' : '#9ca3af',
+          backgroundColor: selectedFile ? '#5f3ded' : '#cbd0de',
           color: '#fff',
           border: 'none',
           borderRadius: '6px',
