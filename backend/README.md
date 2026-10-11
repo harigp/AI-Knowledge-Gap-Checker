@@ -93,7 +93,7 @@ app/
   IDs normalized, duplicates merged, unknown/self references removed, cycles broken (reported in
   `processing_status.warnings`). Invalid output is retried, then `502 ai_invalid_response`.
 - **Model failover:** if `GEMINI_MODEL` times out, is overloaded (5xx) or rate limited (429), the request
-  goes straight to `GEMINI_FALLBACK_MODEL` (default `gemini-2.5-flash-lite`), which gets up to 2 retries.
+  goes straight to `GEMINI_FALLBACK_MODEL` (default `gemini-3.5-flash-lite`), which gets up to 2 retries.
 - **Quiz:** generated on the first `GET /api/quiz/{id}` for the 6 concepts with the most dependents, 2
   questions each. Options are shuffled server-side; answer keys never leave the backend before submission.
   The document excerpt used for grounding is discarded once the quiz exists. The original PDF is never stored.
@@ -108,8 +108,8 @@ See [.env.example](.env.example) for the full list with defaults. The important 
 |---|---|---|
 | `GEMINI_API_KEY` | — | Required unless `AI_MODE=mock`. Backend only. |
 | `AI_MODE` | `gemini` | `mock` for canned responses. |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Switched from 3.8 Flash on 2026-10-10 (3.8 was timing out). |
-| `GEMINI_FALLBACK_MODEL` | `gemini-2.5-flash-lite` | Empty string disables failover. |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | Free tier allows only 5 req/min; bursts fail over to the fallback. (2.5 models return 404 for new API keys.) |
+| `GEMINI_FALLBACK_MODEL` | `gemini-3.5-flash-lite` | Empty string disables failover. |
 | `CORS_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` | Comma-separated. Add the deployed frontend URL. |
 | `SESSION_TTL_MINUTES` | `120` | |
 
