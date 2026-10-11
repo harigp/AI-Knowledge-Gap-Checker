@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-surface {
+    @apply bg-slate-900/80 border border-slate-800 backdrop-blur-md rounded-2xl shadow-xl;
+  }
+  
+  .bg-canvas {
+    @apply bg-slate-950 text-slate-100;
+  }
+
+  .status-strong {
+    @apply bg-emerald-500/10 border-emerald-500 text-emerald-400;
+  }
+
+  .status-developing {
+    @apply bg-amber-500/10 border-amber-500 text-amber-400;
+  }
+
+  .status-weak {
+    @apply bg-rose-500/15 border-rose-500 text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.3)];
+  }
+
+  .status-unassessed {
+    @apply bg-slate-800/80 border-slate-700 text-slate-400;
+  }
+}
