@@ -34,9 +34,9 @@ class Settings:
 
     # AI
     gemini_api_key: str = field(default_factory=lambda: os.getenv("GEMINI_API_KEY", ""))
-    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-2.5-flash"))
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.8-flash"))
     # Used when the primary model times out, is overloaded (5xx) or rate limited (429). "" disables.
-    gemini_fallback_model: str = field(default_factory=lambda: os.getenv("GEMINI_FALLBACK_MODEL", "gemini-2.5-flash-lite"))
+    gemini_fallback_model: str = field(default_factory=lambda: os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash-lite"))
     # Gemini 3.x models: thinking level ("minimal"/"low"/"medium"/"high"; "" = model default).
     gemini_thinking_level: str = field(default_factory=lambda: os.getenv("GEMINI_THINKING_LEVEL", "low"))
     # Gemini 2.x models: thinking token budget (0 = off, -1 = model default).
