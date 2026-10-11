@@ -33,3 +33,18 @@
     @apply bg-slate-800/80 border-slate-700 text-slate-400;
   }
 }
+
+/* Terminal-style blinking cursor in the logo. Defined here (not tailwind.config.js) so it
+   hot-reloads without restarting the dev server. */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1.1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink { animation: none; }
+}

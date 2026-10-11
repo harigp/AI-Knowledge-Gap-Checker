@@ -26,7 +26,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showTagline = false }) 
           Kno<span className="text-indigo-400">(w)</span>Hol<span className="text-indigo-400">(e)</span>
           <span
             aria-hidden="true"
-            className={`ml-1 inline-block rounded-sm bg-indigo-400 animate-blink motion-reduce:animate-none ${
+            className={`ml-1 inline-block rounded-sm bg-indigo-400 animate-blink ${
               lg ? 'h-6 w-2.5' : 'h-5 w-2'
             }`}
           />
