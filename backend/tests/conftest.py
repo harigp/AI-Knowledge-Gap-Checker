@@ -22,7 +22,7 @@ MOCK_ANSWER_KEY = "BDCABADCABCD"
 
 
 def make_settings(**overrides) -> Settings:
-    base = Settings(gemini_api_key="", ai_mode="mock", gemini_fallback_model="", gemini_max_retries=2,
+    base = Settings(gemini_api_key="", ai_mode="mock", gemini_fallback_model_1="", gemini_fallback_model_2="", gemini_fallback_model_3="", gemini_fallback_model_4="", gemini_max_retries=2,
                     gemini_timeout_seconds=1.0, rate_limit_analyze_per_minute=1000,
                     rate_limit_default_per_minute=1000)
     return dataclasses.replace(base, **overrides)

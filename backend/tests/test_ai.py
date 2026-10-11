@@ -99,7 +99,7 @@ def test_failover_to_fallback_model(monkeypatch):
     err = genai_errors.ServerError(504, {"error": {"code": 504, "message": "deadline", "status": "DEADLINE_EXCEEDED"}})
     client, models = fake_client(err, '{"ok": true}')
     gen = GeminiJsonGenerator(make_settings(gemini_api_key="k", gemini_model="gemini-3.8-flash",
-                                            gemini_fallback_model="gemini-2.5-flash"), client=client)
+                                            gemini_fallback_model_1="gemini-3.5-flash-lite", gemini_fallback_model_2="gemini-3.1-flash-lite", gemini_fallback_model_3="gemini-2.5-flash-lite", gemini_fallback_model_4="gemini-2.5-flash"), client=client)
     assert run(gen_call(gen)) == '{"ok": true}'
     assert models.models == ["gemini-3.8-flash", "gemini-2.5-flash"]  # no retries on primary before failover
     assert models.configs[0].thinking_config.thinking_level is not None
@@ -111,7 +111,7 @@ def test_failover_exhausted(monkeypatch):
     err = genai_errors.ServerError(503, {"error": {"code": 503, "message": "busy", "status": "UNAVAILABLE"}})
     client, models = fake_client(err)
     gen = GeminiJsonGenerator(make_settings(gemini_api_key="k", gemini_model="gemini-3.8-flash",
-                                            gemini_fallback_model="gemini-2.5-flash"), client=client)
+                                            gemini_fallback_model_1="gemini-3.5-flash-lite", gemini_fallback_model_2="gemini-3.1-flash-lite", gemini_fallback_model_3="gemini-2.5-flash-lite", gemini_fallback_model_4="gemini-2.5-flash"), client=client)
     with pytest.raises(AIServiceError) as e:
         run(gen_call(gen))
     assert e.value.code == "ai_unavailable"

@@ -116,7 +116,8 @@ export const RoadmapView: React.FC = () => {
                   )}
                   <p className="text-sm text-gray-700">{step.reason}</p>
                 </div>
-                <div className="flex flex-col gap-2 shrink-0">
+                {/* Inline styles keep the links spaced even when Tailwind classes aren't processed. */}
+                <div className="flex flex-col gap-2 shrink-0" style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
                   {searchLinks(step.concept_name).map((link) => (
                     <a
                       key={link.label}
@@ -124,6 +125,7 @@ export const RoadmapView: React.FC = () => {
                       target="_blank"
                       rel="noreferrer"
                       className="bg-blue-600 text-white text-xs px-3.5 py-2 rounded-md font-medium hover:bg-blue-700 transition text-center"
+                      style={{ display: 'inline-block' }}
                     >
                       {link.label}
                     </a>
