@@ -1,201 +1,170 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { ApiError, getQuiz, getResults, submitQuiz } from '../../api/client';
-import type { ApiQuizQuestion, OptionId } from '../../api/types';
+import React, { useState } from 'react';
+import { ArrowLeft, ArrowRight, CheckCircle2, HelpCircle, Loader2 } from 'lucide-react';
 
-// Questions come from GET /api/quiz/{session_id} (generated from the uploaded document on first call).
-// Correct answers never reach the browser: answers are graded by POST /api/quiz/{session_id}/submit.
-export const QuizRunner: React.FC = () => {
-  const { setStep, analysis, setIsQuizCompleted, results, setResults } = useApp();
-  const [questions, setQuestions] = useState<ApiQuizQuestion[] | null>(null);
+export interface QuizQuestion {
+  id: string;
+  concept_id: string;
+  question: string;
+  options: string[];
+}
+
+interface QuizRunnerProps {
+  questions: QuizQuestion[];
+  onSubmit: (answers: Record<string, string>) => Promise<void> | void;
+  isSubmitting?: boolean;
+}
+
+export const QuizRunner: React.FC<QuizRunnerProps> = ({
+  questions,
+  onSubmit,
+  isSubmitting = false,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, OptionId>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [attempt, setAttempt] = useState(0); // bump to retry loading
-  const loadedFor = useRef<string | null>(null); // StrictMode runs effects twice in dev; fetch once
-
-  const sessionId = analysis?.session_id;
-
-  useEffect(() => {
-    if (!sessionId || results) return;
-    const key = `${sessionId}:${attempt}`;
-    if (loadedFor.current === key) return;
-    loadedFor.current = key;
-
-    setError(null);
-    getQuiz(sessionId)
-      .then((quiz) => {
-        if (quiz.submitted) {
-          // Already graded (e.g. after a reload of this screen): show the saved results.
-          return getResults(sessionId).then((saved) => {
-            setResults(saved);
-            setIsQuizCompleted(true);
-          });
-        }
-        setQuestions(quiz.questions);
-      })
-      .catch((err: unknown) => {
-        setError(err instanceof ApiError ? err.message : 'Could not load the quiz.');
-      });
-  }, [sessionId, results, attempt, setResults, setIsQuizCompleted]);
-
-  const handleSubmit = async () => {
-    if (!sessionId || !questions) return;
-    setSubmitting(true);
-    setError(null);
-    try {
-      const graded = await submitQuiz(
-        sessionId,
-        questions
-          .filter((q) => answers[q.id])
-          .map((q) => ({ question_id: q.id, selected_option_id: answers[q.id] })),
-      );
-      setResults(graded);
-      setIsQuizCompleted(true);
-    } catch (err: unknown) {
-      if (err instanceof ApiError && err.code === 'already_submitted') {
-        const saved = await getResults(sessionId);
-        setResults(saved);
-        setIsQuizCompleted(true);
-      } else {
-        setError(err instanceof ApiError ? err.message : 'Could not submit your answers.');
-      }
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (!analysis) {
-    return (
-      <div className="max-w-xl mx-auto p-6 text-center border rounded-xl bg-white shadow-sm my-10">
-        <p className="text-gray-600 mb-4">Upload a document first to generate a quiz.</p>
-        <button onClick={() => setStep('upload')} className="bg-blue-600 text-white px-6 py-2.5 rounded-lg">
-          Upload a Document
-        </button>
-      </div>
-    );
-  }
-
-  if (results) {
-    const pct = Math.round(results.overall_score * 100);
-    return (
-      <div className="max-w-xl mx-auto p-6 text-center border rounded-xl bg-white shadow-sm my-10">
-        <h2 className="text-2xl font-bold mb-2">Assessment Complete!</h2>
-        <p className="text-gray-600 mb-2">
-          You scored <strong>{results.total_correct}</strong> out of <strong>{results.total_questions}</strong> ({pct}%).
-        </p>
-        <p className="text-gray-600 mb-4">
-          {results.learning_gaps.length
-            ? `We found ${results.learning_gaps.length} potential knowledge gap${results.learning_gaps.length > 1 ? 's' : ''}.`
-            : 'No knowledge gaps detected in the assessed concepts.'}
-        </p>
-        <div className="flex gap-3 justify-center">
-          <button
-            onClick={() => setStep('graph')}
-            className="border border-gray-300 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-100 font-medium transition"
-          >
-            View Graph
-          </button>
-          <button
-            onClick={() => setStep('roadmap')}
-            className="bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 font-medium transition"
-          >
-            View Learning Roadmap &rarr;
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (error && !questions) {
-    return (
-      <div className="max-w-xl mx-auto p-6 text-center border rounded-xl bg-white shadow-sm my-10">
-        <h2 className="text-xl font-bold mb-2">Couldn't load the quiz</h2>
-        <p className="text-red-700 mb-4">{error}</p>
-        <button onClick={() => setAttempt((a) => a + 1)} className="bg-blue-600 text-white px-6 py-2.5 rounded-lg">
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
-  if (!questions) {
-    return (
-      <div className="max-w-xl mx-auto p-6 text-center border rounded-xl bg-white shadow-sm my-10">
-        <h2 className="text-xl font-bold mb-2">Preparing your diagnostic quiz...</h2>
-        <p className="text-gray-600">Generating questions from {analysis.document_name}. This can take up to a minute.</p>
-      </div>
-    );
-  }
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
 
   const currentQ = questions[currentIndex];
-  const selected = answers[currentQ.id] ?? null;
-  const isLast = currentIndex + 1 === questions.length;
+  const progressPercent = ((currentIndex + 1) / questions.length) * 100;
+  const isLastQuestion = currentIndex === questions.length - 1;
+  const totalAnswered = Object.keys(selectedAnswers).length;
 
-  const handleNext = () => {
-    if (isLast) {
-      void handleSubmit();
-    } else {
-      setCurrentIndex((prev) => prev + 1);
-    }
+  const handleSelectOption = (option: string) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [currentQ.id]: option,
+    }));
   };
 
+  const handleNext = () => {
+    if (!isLastQuestion) setCurrentIndex((i) => i + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentIndex > 0) setCurrentIndex((i) => i - 1);
+  };
+
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="text-center py-16 text-slate-400">
+        No assessment questions available.
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-2xl mx-auto p-6 border rounded-xl bg-white shadow-sm my-8">
-      <div className="flex justify-between items-center mb-4 pb-2 border-b">
-        <span className="text-xs font-semibold px-2.5 py-1 bg-blue-100 text-blue-800 rounded uppercase">
-          Gap Check: {currentQ.concept_name}
-        </span>
-        <span className="text-sm text-gray-500">
-          Question {currentIndex + 1} of {questions.length}
-        </span>
+    <div className="mx-auto w-full max-w-2xl">
+      {/* Quiz Progress Header */}
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+            Diagnostic Assessment
+          </span>
+          <h2 className="text-xl font-bold text-white">
+            Question {currentIndex + 1} of {questions.length}
+          </h2>
+        </div>
+        <div className="text-right">
+          <span className="text-xs font-medium text-slate-400">
+            {totalAnswered} of {questions.length} answered
+          </span>
+        </div>
       </div>
 
-      <h3 className="text-lg font-bold text-gray-900 mb-4">{currentQ.question}</h3>
-
-      <div className="space-y-3 mb-6">
-        {currentQ.options.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => setAnswers((prev) => ({ ...prev, [currentQ.id]: option.id }))}
-            className={`w-full text-left p-3.5 rounded-lg border transition font-medium text-sm ${
-              selected === option.id
-                ? 'border-blue-600 bg-blue-50 text-blue-900'
-                : 'border-gray-200 hover:bg-gray-50 text-gray-700'
-            }`}
-          >
-            {option.id}. {option.text}
-          </button>
-        ))}
+      {/* Progress Bar */}
+      <div className="mb-6 h-2 w-full overflow-hidden rounded-full bg-slate-800">
+        <div
+          className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 transition-all duration-300"
+          style={{ width: `${progressPercent}%` }}
+        />
       </div>
 
-      {error && <p className="text-red-700 text-sm mb-3">{error}</p>}
+      {/* Question Card */}
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl backdrop-blur-md">
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+            <HelpCircle className="h-4 w-4" />
+          </div>
+          <p className="text-lg font-medium leading-snug text-slate-100">
+            {currentQ.question}
+          </p>
+        </div>
 
-      <div className="flex gap-3">
-        {currentIndex > 0 && (
+        {/* Option Radio Cards */}
+        <div className="space-y-3">
+          {currentQ.options.map((option, idx) => {
+            const isSelected = selectedAnswers[currentQ.id] === option;
+            const letter = String.fromCharCode(65 + idx);
+
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleSelectOption(option)}
+                className={`flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all ${
+                  isSelected
+                    ? 'border-indigo-500 bg-indigo-500/15 shadow-md shadow-indigo-500/10 ring-1 ring-indigo-500'
+                    : 'border-slate-800 bg-slate-950/40 hover:border-slate-700 hover:bg-slate-900/60'
+                }`}
+              >
+                <div
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-all ${
+                    isSelected
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-800 text-slate-400'
+                  }`}
+                >
+                  {letter}
+                </div>
+                <span className={`text-sm ${isSelected ? 'font-medium text-white' : 'text-slate-300'}`}>
+                  {option}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Footer Actions */}
+        <div className="mt-8 flex items-center justify-between border-t border-slate-800/80 pt-6">
           <button
-            onClick={() => setCurrentIndex((prev) => prev - 1)}
-            disabled={submitting}
-            className="py-2.5 px-5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50"
+            type="button"
+            disabled={currentIndex === 0 || isSubmitting}
+            onClick={handlePrev}
+            className="flex items-center gap-2 rounded-xl border border-slate-800 px-4 py-2.5 text-xs font-semibold text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Back
+            <ArrowLeft className="h-4 w-4" />
+            Previous
           </button>
-        )}
-        <button
-          onClick={handleNext}
-          disabled={selected === null || submitting}
-          className={`flex-1 py-2.5 rounded-lg text-white font-medium transition ${
-            selected !== null && !submitting
-              ? 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
-              : 'bg-gray-300 cursor-not-allowed'
-          }`}
-        >
-          {submitting ? 'Grading...' : isLast ? 'Submit Quiz' : 'Next Question'}
-        </button>
+
+          {isLastQuestion ? (
+            <button
+              type="button"
+              disabled={isSubmitting || totalAnswered < questions.length}
+              onClick={() => onSubmit(selectedAnswers)}
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-teal-500/20 hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Analyzing Gaps...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="h-4 w-4" />
+                  Submit Assessment
+                </>
+              )}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleNext}
+              className="flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs font-semibold text-white hover:bg-indigo-500"
+            >
+              Next
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
 };
-
-export default QuizRunner;
